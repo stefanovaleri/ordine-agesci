@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ordine Uniforme AGESCI</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', serif;
+    background: #f5f3ee;
+    color: #1a1a1a;
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #c8c2b4;
+    padding-bottom: 1.25rem;
+  }
+
+  header p {
+    font-size: 12px;
+    color: #888;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  header p a { color: #888; }
+
+  header h1 {
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: -0.01em;
+    color: #1a1a1a;
+  }
+
+  .section {
+    background: #fff;
+    border: 1px solid #ddd8ce;
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Georgia', serif;
+    font-size: 11px;
+    font-weight: normal;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 1rem;
+  }
+
+  .script-box {
+    background: #faf8f4;
+    border: 1px solid #ddd8ce;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .script-box label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #888;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .script-box small {
+    font-size: 12px;
+    color: #aaa;
+    display: block;
+    margin-top: 6px;
+  }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 110px; gap: 8px; align-items: end; }
+
+  label {
+    font-size: 12px;
+    color: #777;
+    display: block;
+    margin-bottom: 4px;
+    font-family: 'Georgia', serif;
+  }
+
+  input[type="text"],
+  input[type="url"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 14px;
+    font-family: 'Georgia', serif;
+    border: 1px solid #ccc8be;
+    border-radius: 4px;
+    background: #fff;
+    color: #1a1a1a;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: #8a7d6b;
+  }
+
+  textarea { resize: vertical; height: 80px; }
+
+  .articolo-card {
+    border: 1px solid #e5e0d6;
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 8px;
+    background: #fdfcfa;
+  }
+
+  .articolo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .articolo-header span {
+    font-size: 13px;
+    color: #555;
+    font-style: italic;
+  }
+
+  .btn-rimuovi {
+    font-size: 12px;
+    color: #999;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px 6px;
+    font-family: 'Georgia', serif;
+  }
+
+  .btn-rimuovi:hover { color: #c0392b; }
+
+  .prezzo-label {
+    font-size: 13px;
+    color: #777;
+    padding-top: 20px;
+    display: block;
+    font-style: italic;
+  }
+
+  .btn-aggiungi {
+    width: 100%;
+    margin-top: 8px;
+    padding: 9px;
+    font-size: 13px;
+    font-family: 'Georgia', serif;
+    color: #888;
+    background: #faf8f4;
+    border: 1px dashed #c8c2b4;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .btn-aggiungi:hover { background: #f0ece4; }
+
+  .totale-box {
+    background: #faf8f4;
+    border: 1px solid #ddd8ce;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .totale-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 6px;
+  }
+
+  .totale-finale {
+    border-top: 1px solid #ddd8ce;
+    padding-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 17px;
+    color: #1a1a1a;
+  }
+
+  .errori {
+    display: none;
+    background: #fdf0ee;
+    border: 1px solid #e8b4ae;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin-bottom: 1rem;
+    font-size: 13px;
+    color: #c0392b;
+    font-style: italic;
+  }
+
+  .btn-invia {
+    width: 100%;
+    padding: 13px;
+    font-size: 15px;
+    font-family: 'Georgia', serif;
+    font-weight: normal;
+    letter-spacing: 0.04em;
+    background: #2c2c2c;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .btn-invia:hover { background: #444; }
+  .btn-invia:disabled { background: #aaa; cursor: not-allowed; }
+
+  /* Conferma */
+  #conferma { display: none; text-align: center; padding: 3rem 1rem; }
+
+  .check-circle {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: #e8f5e9;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.25rem;
+    font-size: 26px;
+    color: #2e7d32;
+  }
+
+  #conferma h2 {
+    font-size: 22px;
+    font-weight: normal;
+    margin-bottom: 8px;
+  }
+
+  #conferma p {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 1.5rem;
+  }
+
+  #riepilogo {
+    background: #faf8f4;
+    border: 1px solid #ddd8ce;
+    border-radius: 6px;
+    padding: 1.25rem;
+    text-align: left;
+    font-size: 13px;
+    color: #666;
+    max-width: 420px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .btn-nuovo {
+    margin-top: 1.5rem;
+    padding: 10px 28px;
+    font-size: 14px;
+    font-family: 'Georgia', serif;
+    background: #fff;
+    border: 1px solid #ccc8be;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #555;
+  }
+
+  .btn-nuovo:hover { background: #f5f3ee; }
+
+  @media (max-width: 520px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr 1fr; }
+    .grid-3 .prezzo-col { grid-column: 1 / -1; padding-top: 0; }
+    .prezzo-label { padding-top: 0 !important; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <p>Modulo ordine · <a href="https://www.scoutonline.shop/84-uniforme-agesci" target="_blank">scoutonline.shop</a></p>
+    <h1>Ordine Uniforme AGESCI</h1>
+  </header>
+
+  <div class="script-box">
+    <label>URL Google Apps Script</label>
+    <input type="url" id="script-url" placeholder="https://script.google.com/macros/s/.../exec" />
+    <small>Incolla qui l'URL ottenuto dopo aver pubblicato lo script in Google Apps Script.</small>
+  </div>
+
+  <div id="form-container">
+
+    <div class="section">
+      <p class="section-title">Dati ragazzo</p>
+      <div class="grid-2">
+        <div>
+          <label>Nome</label>
+          <input type="text" id="nome" placeholder="Mario" />
+        </div>
+        <div>
+          <label>Cognome</label>
+          <input type="text" id="cognome" placeholder="Rossi" />
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-title">Articoli</p>
+      <div id="articoli-list"></div>
+      <button class="btn-aggiungi" onclick="aggiungiArticolo()">+ Aggiungi articolo</button>
+    </div>
+
+    <div class="section">
+      <p class="section-title">Note aggiuntive</p>
+      <textarea id="note" placeholder="Istruzioni particolari o preferenze..."></textarea>
+    </div>
+
+    <div class="totale-box">
+      <div class="totale-row"><span>Subtotale</span><span id="subtotale">€0,00</span></div>
+      <div class="totale-finale"><span>Totale</span><span id="totale">€0,00</span></div>
+    </div>
+
+    <div class="errori" id="errori"></div>
+
+    <button class="btn-invia" id="btn-invia" onclick="inviaOrdine()">Invia ordine</button>
+
+  </div>
+
+  <div id="conferma">
+    <div class="check-circle">✓</div>
+    <h2>Ordine inviato!</h2>
+    <p>I dati sono stati salvati nel foglio Google.</p>
+    <div id="riepilogo"></div>
+    <button class="btn-nuovo" onclick="nuovoOrdine()">Nuovo ordine</button>
+  </div>
+
+</div>
+
+<script>
+const TAGLIE_ADULTO = ["XS","S","M","L","XL","XXL","3XL","4XL"];
+const TAGLIE_PANTALONI_ADULTO = ["42","44","46","48","50","52","54","56","58","60","62","64"];
+const TAGLIE_JUNIOR = ["6","8","10","12","14"];
+const TAGLIE_BERRETTO = ["S","M","L"];
+const TAGLIE_CAPPELLONE = ["53","54","55","56","57","58","59","60","61","62"];
+const TAGLIE_CINTURA = ["80cm","90cm","100cm","110cm","120cm","130cm"];
+const TAGLIE_CALZA = ["7anni(29/30)","8anni(31/32)","9anni(33/34)","10anni(35/36)","11anni(37/38)","12anni(39/40)","11uomo(41/42)","12uomo(43/44)","13uomo(45/46)"];
+const TAGLIE_DONNA = ["XS/38","S/40","M/42","L/44","XL/46","2XL/48","3XL/50","4XL/52"];
+
+const prodotti = [
+  { categoria:"Camicia",  nome:"Camicia uniforme AGESCI - Junior",  prezzo:22.70, taglie:TAGLIE_JUNIOR },
+  { categoria:"Camicia",  nome:"Camicia uniforme AGESCI - Uomo",    prezzo:25.30, taglie:TAGLIE_ADULTO },
+  { categoria:"Camicia",  nome:"Camicia uniforme AGESCI - Donna",   prezzo:22.70, taglie:TAGLIE_DONNA },
+  { categoria:"Camicia",  nome:"Kit camicia AGESCI Fai da te",      prezzo:21.00, taglie:null },
+  { categoria:"Polo",     nome:"Polo azzurra uniforme - Adulto",    prezzo:18.00, taglie:TAGLIE_ADULTO },
+  { categoria:"Polo",     nome:"Polo azzurra uniforme - Junior",    prezzo:17.00, taglie:["8","10","12"] },
+  { categoria:"Maglione", nome:"Maglione di lana uniforme - Adulto",prezzo:47.50, taglie:TAGLIE_ADULTO },
+  { categoria:"Maglione", nome:"Maglione di lana uniforme - Junior",prezzo:34.50, taglie:TAGLIE_JUNIOR },
+  { categoria:"Pantalone",nome:"Pantalone lungo velluto - Unisex",  prezzo:50.00, taglie:TAGLIE_PANTALONI_ADULTO },
+  { categoria:"Pantalone",nome:"Pantalone corto velluto - Unisex",  prezzo:37.50, taglie:TAGLIE_PANTALONI_ADULTO },
+  { categoria:"Pantalone",nome:"Pantalone lungo junior velluto",    prezzo:50.00, taglie:TAGLIE_JUNIOR },
+  { categoria:"Pantalone",nome:"Pantalone corto junior velluto",    prezzo:37.50, taglie:TAGLIE_JUNIOR },
+  { categoria:"Pantalone",nome:"Pantalone corto gabardine - Uomo",  prezzo:34.00, taglie:TAGLIE_PANTALONI_ADULTO },
+  { categoria:"Pantalone",nome:"Pantalone corto gabardine - Donna", prezzo:34.00, taglie:["40","42","44","46","48","50","52","54","56","58","60"] },
+  { categoria:"Gonna",    nome:"Gonna pantalone velluto",           prezzo:52.70, taglie:TAGLIE_PANTALONI_ADULTO },
+  { categoria:"Gonna",    nome:"Gonna pantalone gabardine",         prezzo:45.00, taglie:["42","44","46","48","50","52","54","56","58","60"] },
+  { categoria:"Gonna",    nome:"Gonna pantalone junior",            prezzo:52.70, taglie:TAGLIE_JUNIOR },
+  { categoria:"Cappello", nome:"Cappellone scout completo",         prezzo:39.80, taglie:TAGLIE_CAPPELLONE },
+  { categoria:"Cappello", nome:"Berretto lupetto",                  prezzo:13.00, taglie:TAGLIE_BERRETTO },
+  { categoria:"Cappello", nome:"Berretto coccinella",               prezzo:13.00, taglie:TAGLIE_BERRETTO },
+  { categoria:"Cintura",  nome:"Cintura uniforme AGESCI (cuoio)",   prezzo:10.50, taglie:TAGLIE_CINTURA },
+  { categoria:"Cintura",  nome:"Fibbia scout",                      prezzo:7.00,  taglie:null },
+  { categoria:"Calza",    nome:"Calza uniforme 4 stagioni",         prezzo:6.10,  taglie:TAGLIE_CALZA },
+  { categoria:"Accessori",nome:"Cinturino per cappellone",          prezzo:3.60,  taglie:null },
+  { categoria:"Accessori",nome:"Bottone AGESCI",                    prezzo:0.10,  taglie:null },
+];
+
+let contatore = 0;
+
+function buildProdottiOptions() {
+  const bycat = {};
+  prodotti.forEach((p,i) => { if (!bycat[p.categoria]) bycat[p.categoria]=[]; bycat[p.categoria].push({...p,idx:i}); });
+  return Object.entries(bycat).map(([cat,items]) =>
+    `<optgroup label="${cat}">${items.map(p=>`<option value="${p.idx}">${p.nome} — €${p.prezzo.toFixed(2).replace('.',',')}</option>`).join('')}</optgroup>`
+  ).join('');
+}
+
+function buildTaglieOptions(taglie) {
+  if (!taglie || !taglie.length) return '<option value="">—</option>';
+  return taglie.map(t=>`<option value="${t}">${t}</option>`).join('');
+}
+
+function aggiungiArticolo() {
+  contatore++;
+  const id = contatore;
+  const div = document.createElement("div");
+  div.id = "articolo-" + id;
+  div.className = "articolo-card";
+  const p0 = prodotti[0];
+  div.innerHTML = `
+    <div class="articolo-header">
+      <span>Articolo ${id}</span>
+      <button class="btn-rimuovi" onclick="rimuoviArticolo(${id})">Rimuovi</button>
+    </div>
+    <div style="display:grid;gap:8px;">
+      <div>
+        <label>Articolo</label>
+        <select class="sel-prodotto" onchange="onProdottoChange(this)">${buildProdottiOptions()}</select>
+      </div>
+      <div class="grid-3">
+        <div>
+          <label>Taglia / Misura</label>
+          <select class="sel-taglia">${buildTaglieOptions(p0.taglie)}</select>
+        </div>
+        <div>
+          <label>Quantità</label>
+          <input type="number" min="1" max="99" value="1" class="qty" onchange="aggiornaTotale()" />
+        </div>
+        <div class="prezzo-col">
+          <span class="prezzo-label"></span>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById("articoli-list").appendChild(div);
+  aggiornaPrezzLabel(div);
+  aggiornaTotale();
+}
+
+function onProdottoChange(sel) {
+  const div = sel.closest(".articolo-card");
+  const p = prodotti[parseInt(sel.value)];
+  const st = div.querySelector(".sel-taglia");
+  st.innerHTML = buildTaglieOptions(p.taglie);
+  const ha = p.taglie && p.taglie.length;
+  st.style.opacity = ha ? "1" : "0.5";
+  st.style.pointerEvents = ha ? "auto" : "none";
+  aggiornaPrezzLabel(div);
+  aggiornaTotale();
+}
+
+function aggiornaPrezzLabel(div) {
+  const p = prodotti[parseInt(div.querySelector(".sel-prodotto").value)];
+  const qty = parseInt(div.querySelector(".qty").value) || 1;
+  div.querySelector(".prezzo-label").textContent = `€${p.prezzo.toFixed(2).replace('.',',')} × ${qty} = €${(p.prezzo*qty).toFixed(2).replace('.',',')}`;
+}
+
+document.addEventListener("change", function(e) {
+  if (e.target.classList.contains("qty")) {
+    const div = e.target.closest(".articolo-card");
+    if (div) { aggiornaPrezzLabel(div); aggiornaTotale(); }
+  }
+});
+
+function rimuoviArticolo(id) {
+  const el = document.getElementById("articolo-"+id);
+  if (el) el.remove();
+  aggiornaTotale();
+}
+
+function aggiornaTotale() {
+  let sub = 0;
+  document.querySelectorAll(".articolo-card").forEach(div => {
+    const p = prodotti[parseInt(div.querySelector(".sel-prodotto").value)];
+    const qty = parseInt(div.querySelector(".qty").value || 1);
+    sub += p.prezzo * qty;
+  });
+  document.getElementById("subtotale").textContent = "€"+sub.toFixed(2).replace(".",",");
+  document.getElementById("totale").textContent = "€"+sub.toFixed(2).replace(".",",");
+}
+
+async function inviaOrdine() {
+  const errori = [];
+  const scriptUrl = document.getElementById("script-url").value.trim();
+  if (!scriptUrl) errori.push("Inserisci l'URL dello script Google Apps Script");
+  if (!document.getElementById("nome").value.trim()) errori.push("Nome obbligatorio");
+  if (!document.getElementById("cognome").value.trim()) errori.push("Cognome obbligatorio");
+  if (document.querySelectorAll(".articolo-card").length === 0) errori.push("Aggiungi almeno un articolo");
+
+  const errDiv = document.getElementById("errori");
+  if (errori.length > 0) {
+    errDiv.innerHTML = errori.map(e => "• "+e).join("<br>");
+    errDiv.style.display = "block";
+    return;
+  }
+  errDiv.style.display = "none";
+
+  const articoli = [];
+  const righe = [];
+  document.querySelectorAll(".articolo-card").forEach(div => {
+    const p = prodotti[parseInt(div.querySelector(".sel-prodotto").value)];
+    const taglia = div.querySelector(".sel-taglia").value;
+    const qty = parseInt(div.querySelector(".qty").value);
+    articoli.push({ nome: p.nome, taglia: taglia||"—", quantita: qty, prezzo: p.prezzo });
+    const ts = (taglia && taglia!=="—") ? ` · ${taglia}` : "";
+    righe.push(`${p.nome}${ts} × ${qty} — €${(p.prezzo*qty).toFixed(2).replace(".",",")}`);
+  });
+
+  const payload = {
+    nome: document.getElementById("nome").value.trim(),
+    cognome: document.getElementById("cognome").value.trim(),
+    note: document.getElementById("note").value.trim(),
+    articoli
+  };
+
+  const btn = document.getElementById("btn-invia");
+  btn.textContent = "Invio in corso…";
+  btn.disabled = true;
+
+  try {
+    await fetch(scriptUrl, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    document.getElementById("form-container").style.display = "none";
+    document.getElementById("conferma").style.display = "block";
+    document.getElementById("riepilogo").innerHTML = `
+      <strong style="color:#1a1a1a;">Ragazzo:</strong> ${payload.nome} ${payload.cognome}<br><br>
+      <strong style="color:#1a1a1a;">Articoli:</strong><br>${righe.join("<br>")}<br><br>
+      <strong style="color:#1a1a1a;">Totale: ${document.getElementById("totale").textContent}</strong>`;
+  } catch(err) {
+    errDiv.innerHTML = "• Errore di rete. Controlla l'URL dello script e riprova.";
+    errDiv.style.display = "block";
+    btn.textContent = "Invia ordine";
+    btn.disabled = false;
+  }
+}
+
+function nuovoOrdine() {
+  document.getElementById("conferma").style.display = "none";
+  document.getElementById("form-container").style.display = "block";
+  document.getElementById("articoli-list").innerHTML = "";
+  document.getElementById("nome").value = "";
+  document.getElementById("cognome").value = "";
+  document.getElementById("note").value = "";
+  document.getElementById("btn-invia").textContent = "Invia ordine";
+  document.getElementById("btn-invia").disabled = false;
+  contatore = 0;
+  aggiornaTotale();
+  aggiungiArticolo();
+}
+
+aggiungiArticolo();
+</script>
+</body>
+</html>
