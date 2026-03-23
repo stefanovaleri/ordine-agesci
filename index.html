@@ -61,29 +61,7 @@
     margin-bottom: 1rem;
   }
 
-  .script-box {
-    background: #faf8f4;
-    border: 1px solid #ddd8ce;
-    border-radius: 6px;
-    padding: 1rem 1.25rem;
-    margin-bottom: 1rem;
-  }
 
-  .script-box label {
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #888;
-    display: block;
-    margin-bottom: 8px;
-  }
-
-  .script-box small {
-    font-size: 12px;
-    color: #aaa;
-    display: block;
-    margin-top: 6px;
-  }
 
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .grid-3 { display: grid; grid-template-columns: 1fr 1fr 110px; gap: 8px; align-items: end; }
@@ -299,12 +277,6 @@
     <h1>Ordine Uniforme AGESCI</h1>
   </header>
 
-  <div class="script-box">
-    <label>URL Google Apps Script</label>
-    <input type="url" id="script-url" placeholder="https://script.google.com/macros/s/.../exec" />
-    <small>Incolla qui l'URL ottenuto dopo aver pubblicato lo script in Google Apps Script.</small>
-  </div>
-
   <div id="form-container">
 
     <div class="section">
@@ -485,9 +457,8 @@ function aggiornaTotale() {
 }
 
 async function inviaOrdine() {
+  const scriptUrl = "https://script.google.com/macros/s/AKfycbyISXRBgF-6XAQzqmTN6CBziwVEVugSP51vRQdi5dmSAYCzOH8hS363IS6JGtawfH4l-Q/exec";
   const errori = [];
-  const scriptUrl = document.getElementById("script-url").value.trim();
-  if (!scriptUrl) errori.push("Inserisci l'URL dello script Google Apps Script");
   if (!document.getElementById("nome").value.trim()) errori.push("Nome obbligatorio");
   if (!document.getElementById("cognome").value.trim()) errori.push("Cognome obbligatorio");
   if (document.querySelectorAll(".articolo-card").length === 0) errori.push("Aggiungi almeno un articolo");
